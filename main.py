@@ -12,6 +12,7 @@ from flask import Flask, request, render_template, redirect, url_for, flash, ses
 
 JAEGER_HOST = os.environ['JAEGER_REPORTING_HOST']
 JAEGER_PORT = os.environ['JAEGER_REPORTING_PORT']
+JAEGER_SVC_NAME = os.environ['JAEGER_SVC_NAME']
 AUTH_ENDPOINT = os.environ['AUTH_ENDPOINT']
 
 app = Flask(__name__)
@@ -29,7 +30,7 @@ config = Config(
         },
         'logging': True,
     },
-    service_name='cybermonday',
+    service_name=JAEGER_SVC_NAME,
 )
 opentracing_tracer = config.initialize_tracer()
 tracer = FlaskTracer(opentracing_tracer)
