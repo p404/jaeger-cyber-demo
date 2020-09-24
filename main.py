@@ -50,6 +50,16 @@ def validate_email(email):
 @app.route('/', methods=['GET'])
 @tracer.trace()
 def index():
+    span = tracer.get_span()
+    
+    headers = {}
+    for k, v in request.headers:
+        headers[k.lower()] = v
+
+    tracer.inject(span.context,
+                  opentracing.Format.TEXT_MAP,
+                  headers)
+
     return render_template('index.html')
 
 @app.route('/login', methods=['POST', 'GET'])
